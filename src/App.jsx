@@ -5,6 +5,7 @@ import * as tf from "@tensorflow/tfjs";
 import * as cocossd from "@tensorflow-models/coco-ssd";
 import Webcam from "react-webcam";
 import "./App.css";
+// import dotenv from "dotenv";
 // 2. TODO - Import drawing utility here
 import { drawRect } from "./utils.js";
 import NotificationSound from "./notify.mp3";
@@ -12,8 +13,9 @@ import { Navbar } from "./components/navbar";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from "react-toastify";
 import CaptureAndDetect from "./page/capture";
+// dotenv.config();
 
-function App() {
+export default function App() {
   const [count , setCount] = useState(0);
   const [width, setWidth] = useState(640);
   const [height, setHeight] = useState(480);
@@ -25,8 +27,16 @@ function App() {
   }
   
   const notify =  {
-    highDensity: ()=> toast.error("Density is high"),
-    lowDensity : ()=> toast.warn("Density is low")
+    highDensity: ()=> toast.error("Density is high", {
+      containerId: 'A'
+    }),
+    lowDensity : ()=> toast.warn("Density is low"), 
+    SecIncrement : ()=> toast.info("increament by 10 Seconds", {
+      containerId: 'B'
+    }),
+    manualController : ()=> toast.info("shift to manual signal transitions", {
+      containerId: 'B'
+    }),
   }
 
   const runCoco = async () => {
@@ -34,7 +44,7 @@ function App() {
     
     setInterval(() => {
       detect(net);
-    }, 10000);
+    }, 1000);
   };
 
  
@@ -71,10 +81,13 @@ function App() {
       if(counter > 1){
         notify.highDensity();
         playAudio();
+        if(counter > 5 && counter < 10){
+        notify.SecIncrement();
       }
     }
 
-  };
+  }
+};
   
   console.log(count);
   useEffect(()=>{runCoco()},[]);
@@ -82,9 +95,9 @@ function App() {
   return (
     <div className="App">
       <Navbar/>
-      <div className="w-full h-full">
-
-        <Webcam
+      <div className="w-full flex flex-col">
+      <div className="w-full">
+      <Webcam
           ref={webcamRef}
           muted={true} 
           style={{
@@ -115,13 +128,29 @@ function App() {
           }}
         />
       </div>
+       
+      <div className=""> 
+        <h1 className="text-2xl text-center bg-blue-600 text-white rounded-xl p-2" style={{
+          position: "absolute",
+          marginLeft: "auto",
+          marginRight: "auto",
+          left: 0,
+          right: 0,
+          textAlign: "center",
+          zindex: 9,
+          marginTop: "30rem",
+          width: "25%",
+        }}>Total Count : {count}</h1>
+      </div>
+      </div>
       <audio ref={audioRef} src={NotificationSound} />
-      <ToastContainer theme="dark" position="bottom-center" limit={1}/>
+      <ToastContainer theme="dark" position="bottom-center" limit={1} containerId={'A'} enableMultiContainer/>
+      <ToastContainer theme="dark" position="top-right" limit={1} containerId={'B'} enableMultiContainer />
+
     </div>
     // <div className="App">
     //   <CaptureAndDetect/>
     // </div>
   );
-}
 
-export default App;
+}
