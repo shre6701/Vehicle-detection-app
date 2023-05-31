@@ -31,7 +31,13 @@ export default function App() {
       containerId: 'A'
     }),
     lowDensity : ()=> toast.warn("Density is low"), 
-    SecIncrement : ()=> toast.info("increament by 10 Seconds", {
+    SecIncrement10 : ()=> toast.info("Apply signal rotation of 10 sec", {
+      containerId: 'B'
+    }),
+    SecIncrement20 : ()=> toast.info("Apply signal rotation of 20 sec", {
+      containerId: 'B'
+    }),
+    SecIncrement30 : ()=> toast.info("Apply signal rotation of 30 sec", {
       containerId: 'B'
     }),
     manualController : ()=> toast.info("shift to manual signal transitions", {
@@ -78,11 +84,20 @@ export default function App() {
       // 5. TODO - Update drawing utility
       const counter = drawRect(obj, ctx);
       setCount(counter);
-      if(counter > 1){
+      if(counter > 4){
         notify.highDensity();
         playAudio();
-        if(counter > 5 && counter < 10){
-        notify.SecIncrement();
+        if(counter < 5){
+        notify.SecIncrement30();
+      }
+      else if(count > 5 && count < 8){
+        notify.SecIncrement20();
+      }
+      else if (count > 8 && count < 10){
+        notify.SecIncrement10();
+      }
+      else if (count > 10){
+        notify.manualController();
       }
     }
 
