@@ -17,8 +17,8 @@ import CaptureAndDetect from "./page/capture";
 
 export default function App() {
   const [count , setCount] = useState(0);
-  const [width, setWidth] = useState(640);
-  const [height, setHeight] = useState(480);
+  // const [width, setWidth] = useState(640);
+  // const [height, setHeight] = useState(480);
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const audioRef = useRef(null);
@@ -123,7 +123,7 @@ export default function App() {
             right: 0,
             textAlign: "center",
             zindex: 9,
-            width: 360,
+            width: 720,
             height: 480,
           }}
         />
@@ -138,14 +138,14 @@ export default function App() {
             right: 0,
             textAlign: "center",
             zindex: 8,
-            width: 300,
+            width: 720,
             height: 480,
           }}
         />
       </div>
        
       <div className=""> 
-        <h1 className="text-2xl text-center bg-blue-600 text-white rounded-xl p-2" style={{
+        <h1 className="text-2xl text-center bg-blue-600 text-white rounded-xl p-2 mt-2" style={{
           position: "absolute",
           marginLeft: "auto",
           marginRight: "auto",
